@@ -9,6 +9,10 @@
       "description": "Client access token for Api.ai",
       "value": ""
     },
+    "KIK_API_KEY": {
+      "description": "Kik Api key",
+      "value": ""
+    },
     "APIAI_LANG": {
       "description": "Agent language",
       "value": "",
