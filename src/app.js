@@ -21,11 +21,58 @@ let bot = new Bot({
     baseUrl: 'https://xvir-kik.herokuapp.com/'
 });
 
+function isDefined(obj) {
+    if (typeof obj == 'undefined') {
+        return false;
+    }
+
+    if (!obj) {
+        return false;
+    }
+
+    return obj != null;
+}
+
 bot.updateBotConfiguration();
 
 bot.onTextMessage((message) => {
-    console.log("Message: " + message.body);
-    message.reply(message.body);
+    console.log("Message: " + JSON.stringify(message));
+    
+    let messageText = message.body;
+    
+    if (messageText) {
+        // if (!sessionIds.has(sender)) {
+        //     sessionIds.set(sender, uuid.v1());
+        // }
+
+        let apiaiRequest = apiAiService.textRequest(messageText,
+            {
+               // sessionId: sessionIds.get(sender)
+            });
+
+        apiaiRequest.on('response', (response) => {
+            if (isDefined(response.result)) {
+                let responseText = response.result.fulfillment.speech;
+                let responseData = response.result.fulfillment.data;
+                let action = response.result.action;
+
+                if (isDefined(responseData) && isDefined(responseData.kik)) {
+                    try {
+
+                    } catch (err) {
+                        message.reply(err.message);
+                    }
+                } else if (isDefined(responseText)) {
+                    console.log('Response as text message');
+                    message.reply(responseText);
+                }
+
+            }
+        });
+
+        apiaiRequest.on('error', (error) => console.error(error));
+        apiaiRequest.end();
+    }
 });
 
 const server = http
