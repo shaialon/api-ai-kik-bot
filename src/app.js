@@ -37,7 +37,10 @@ bot.updateBotConfiguration();
 
 bot.onTextMessage((message) => {
     console.log("Message: " + JSON.stringify(message));
-    
+
+    console.log("chatId " + message.chatId);
+    console.log("from " + message.from);
+
     let messageText = message.body;
     
     if (messageText) {
