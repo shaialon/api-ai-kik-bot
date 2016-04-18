@@ -10,7 +10,7 @@ const REST_PORT = (process.env.PORT || 5000);
 const APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN;
 const APIAI_LANG = process.env.APIAI_LANG || 'en';
 const KIK_API_KEY = process.env.KIK_API_KEY;
-const SERVICE_URL = process.env.SERVICE_URL;
+const SERVICE_URL = "https://" + process.env.APP_NAME + ".herokuapp.com";
 
 const apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG});
 const sessionIds = new Map();
