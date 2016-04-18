@@ -2,7 +2,6 @@
 
 const apiai = require('apiai');
 const Bot  = require('@kikinteractive/kik');
-const bodyParser = require('body-parser');
 const uuid = require('node-uuid');
 const request = require('request');
 const http = require('http');
@@ -17,8 +16,7 @@ const sessionIds = new Map();
 
 let bot = new Bot({
     username: 'apiai.bot',
-    apiKey: KIK_API_KEY,
-    baseUrl: 'https://xvir-kik.herokuapp.com/'
+    apiKey: KIK_API_KEY
 });
 
 function isDefined(obj) {
@@ -36,21 +34,21 @@ function isDefined(obj) {
 bot.updateBotConfiguration();
 
 bot.onTextMessage((message) => {
-    console.log("Message: " + JSON.stringify(message));
-
+    // message format from https://dev.kik.com/#/docs/messaging#receiving-messages
     console.log("chatId " + message.chatId);
     console.log("from " + message.from);
 
+    let chatId = message.chatId;
     let messageText = message.body;
     
     if (messageText) {
-        // if (!sessionIds.has(sender)) {
-        //     sessionIds.set(sender, uuid.v1());
-        // }
+        if (!sessionIds.has(chatId)) {
+            sessionIds.set(chatId, uuid.v1());
+        }
 
         let apiaiRequest = apiAiService.textRequest(messageText,
             {
-               // sessionId: sessionIds.get(sender)
+               sessionId: sessionIds.get(chatId)
             });
 
         apiaiRequest.on('response', (response) => {
@@ -61,7 +59,9 @@ bot.onTextMessage((message) => {
 
                 if (isDefined(responseData) && isDefined(responseData.kik)) {
                     try {
-
+                        // message can be formatted according to https://dev.kik.com/#/docs/messaging#message-formats
+                        console.log('Response as formatted message');
+                        message.reply(responseData.kik);
                     } catch (err) {
                         message.reply(err.message);
                     }
@@ -69,7 +69,6 @@ bot.onTextMessage((message) => {
                     console.log('Response as text message');
                     message.reply(responseText);
                 }
-
             }
         });
 
