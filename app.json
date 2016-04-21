@@ -9,12 +9,12 @@
       "description": "Copy App Name here",
       "value": ""
     },
-    "APIAI_ACCESS_TOKEN": {
-      "description": "Client access token for Api.ai",
-      "value": ""
-    },
     "KIK_API_KEY": {
       "description": "Kik Api key",
+      "value": ""
+    },
+    "APIAI_ACCESS_TOKEN": {
+      "description": "Client access token for Api.ai",
       "value": ""
     },
     "APIAI_LANG": {
