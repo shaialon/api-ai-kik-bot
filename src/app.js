@@ -12,7 +12,7 @@ const APIAI_LANG = process.env.APIAI_LANG || 'en';
 const KIK_API_KEY = process.env.KIK_API_KEY;
 const SERVICE_URL = "https://" + process.env.APP_NAME + ".herokuapp.com";
 
-const apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG});
+const apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "kik"});
 const sessionIds = new Map();
 
 let bot = new Bot({
