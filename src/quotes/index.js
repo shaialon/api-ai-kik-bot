@@ -40,7 +40,7 @@ function getByAuthor(authorName) {
   if(partial.length > 0){
 	return sample(partial);
   }
-  return `Not quotes found`;
+  return null;
 
 }
 

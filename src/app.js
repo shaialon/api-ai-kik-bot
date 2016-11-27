@@ -55,17 +55,16 @@ bot.onTextMessage((message, next) => {
             });
 
         apiaiRequest.on('response', (response) => {
-            //console.dir(response, {colors:true});
+            console.dir(response.result, {colors:true});
             if (isDefined(response.result)) {
                 let selectedAction = response.result.action;
-                let responseText = response.result.fulfillment.speech;
-                let responseData = response.result.fulfillment.data;
-
-                console.log(selectedAction);
-                console.dir(response.result, {colors:true});
 
                 if(handlers[selectedAction]){
                     handlers[selectedAction](message, response.result);
+                }
+                else {
+                    // Fallback
+                    handlers['input.unknown'](message, response.result);
                 }
 
 
@@ -94,18 +93,28 @@ function nameFromParams (params){
 }
 
 const handlers = {
-    quote_search : (message, aiResult) => {
+    'quote_search' : (message, aiResult) => {
         let name = nameFromParams(aiResult.parameters);
         //message.reply(`Searching for quotes by ${name}`);
         let quote = quotes.getByAuthor(name);
-        message.reply(`${quote.quote}\n\n~ ${quote.author}`);
-    },
+        if(quote){
+            message.reply(`${quote.quote}\n\n~ ${quote.author}`);
+        }
+        else {
+            message.reply(`I have failed you, nothing found. Great, just what I need...\n\nMy mom tells me I should have gone to  law school to become of those lawyer bots.`);
+        }
 
-    random_quote : (message, aiResult) => {
-        //message.reply(`Here is a random quote`);
+    },
+    'input.unknown' :(message, aiResult) => {
+        message.reply(`Oooops you broke me :(\nHere is a random quote:`);
         let quote = quotes.getRandom();
         message.reply(`${quote.quote}\n\n~ ${quote.author}`);
     },
+    //random_quote : (message, aiResult) => {
+    //    //message.reply(`Here is a random quote`);
+    //    let quote = quotes.getRandom();
+    //    message.reply(`${quote.quote}\n\n~ ${quote.author}`);
+    //},
 };
 
 
