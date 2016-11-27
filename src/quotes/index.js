@@ -1,5 +1,5 @@
 'use strict';
-
+const {stripStr, sample} = require('../utils');
 const quotesArr = require('./quotes_array');
 // Prepare quotes for Search:
 const quotesSearchable = quotesArr.map(quote => {
@@ -9,13 +9,6 @@ const quotesSearchable = quotesArr.map(quote => {
   });
 });
 
-// Utils
-function stripStr(phrase){
-  return phrase.trim().replace(/[\?'.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
-}
-function sample(arr) {
-	return arr[Math.floor(Math.random() * arr.length)];
-}
 
 // Handlers
 function getRandom() {
@@ -53,7 +46,7 @@ function getStats() {
   console.log(tags);
 }
 
-console.log(getStats());
+//console.log(getStats());
 
 module.exports = {
   quotesArr,
