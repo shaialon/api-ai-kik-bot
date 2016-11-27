@@ -96,19 +96,26 @@ const handlers = {
     'quote_search' : (message, aiResult) => {
         let name = nameFromParams(aiResult.parameters);
         //message.reply(`Searching for quotes by ${name}`);
-        let quote = quotes.getByAuthor(name);
+        let quote = name.length > 0 ? quotes.getByAuthor(name) : quotes.getRandom();
         if(quote){
-            message.reply(`${quote.quote}\n\n~ ${quote.author}`);
+            message.reply([
+                lastMessage(`${quote.quote}\n\n~ ${quote.author}`)
+            ]);
         }
         else {
-            message.reply(`I have failed you, nothing found. Great, just what I need...\n\nMy mom tells me I should have gone to  law school to become of those lawyer bots.`);
+
+            message.reply([
+                lastMessage(`I have failed you, nothing found. Great, just what I need...\n\nMy mom tells me I should have gone to  law school to become of those lawyer bots.`)
+            ]);
         }
 
     },
     'input.unknown' :(message, aiResult) => {
-        message.reply(`Oooops you broke me :(\nHere is a random quote:`);
         let quote = quotes.getRandom();
-        message.reply(`${quote.quote}\n\n~ ${quote.author}`);
+        message.reply([
+            `Oooops you broke me :(\nHere is a random quote:`,
+            lastMessage(`${quote.quote}\n\n~ ${quote.author}`)
+        ])
     },
     //random_quote : (message, aiResult) => {
     //    //message.reply(`Here is a random quote`);
@@ -116,7 +123,11 @@ const handlers = {
     //    message.reply(`${quote.quote}\n\n~ ${quote.author}`);
     //},
 };
-
+function lastMessage (text){
+    return Bot.Message.text(text)
+              .addTextResponse('Random Quote')
+              .addTextResponse('Categories')
+}
 
 const server = http
     .createServer(bot.incoming())
