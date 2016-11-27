@@ -29,5 +29,4 @@ build/Release
 .npm
 
 # Optional REPL history
-.node_repl_history
->>>>>>> 772905ea961ba965027ba86a3011355968b93b72
+.idea/
