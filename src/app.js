@@ -98,15 +98,21 @@ const handlers = {
         //message.reply(`Searching for quotes by ${name}`);
         let quote = name.length > 0 ? quotes.getByAuthor(name) : quotes.getRandom();
         if(quote){
+            // Quote found!
             message.reply([
                 lastMessage(`${quote.quote}\n\n~ ${quote.author}`)
             ]);
         }
         else {
+            // Quote not found!
+            message.startTyping();
+            bot.getUserProfile(message.from)
+              .then((user) => {
+                  message.reply([
+                      lastMessage(`I have failed you ${user.firstName}, nothing found! Great, just what I need...\n\nMy mom tells me I should have gone to law school to become of those lawyer bots.`)
+                  ]);
+              });
 
-            message.reply([
-                lastMessage(`I have failed you, nothing found. Great, just what I need...\n\nMy mom tells me I should have gone to  law school to become of those lawyer bots.`)
-            ]);
         }
 
     },
@@ -116,13 +122,9 @@ const handlers = {
             `Oooops you broke me :(\nHere is a random quote:`,
             lastMessage(`${quote.quote}\n\n~ ${quote.author}`)
         ])
-    },
-    //random_quote : (message, aiResult) => {
-    //    //message.reply(`Here is a random quote`);
-    //    let quote = quotes.getRandom();
-    //    message.reply(`${quote.quote}\n\n~ ${quote.author}`);
-    //},
+    }
 };
+
 function lastMessage (text){
     return Bot.Message.text(text)
               .addTextResponse('Random Quote')
