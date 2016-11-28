@@ -14,7 +14,7 @@ const navigation = [
 	key: `categories`,
 	name: E(':checkered_flag: Categories'),
 	handler: (message) => {
-	  console.log("YEY NAV2")
+	  message.reply(`Categories are coming soon...`)
 	}
   }
 ];
