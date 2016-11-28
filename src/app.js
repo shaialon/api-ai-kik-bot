@@ -5,7 +5,7 @@ const request = require('request');
 const http = require('http');
 
 
-const {navigationMiddleware, navigationItems} = require ('./navigation');
+const {navigationMiddleware, navigationItems, addNavigationItems} = require ('./navigation');
 const {textMiddleware} = require('./text_input');
 
 const REST_PORT = (process.env.PORT || 8083);
@@ -25,15 +25,15 @@ let bot = new Bot({
 bot.updateBotConfiguration();
 
 // On initial open of chat window
-//bot.onStartChattingMessage((message) => {
-//    bot.getUserProfile(message.from)
-//      .then((user) => {
-//          const message = Bot.Message.text(`Hey ${user.firstName}! Nice to meet you, I'll be your own personal assistant 🤖`)
-//            .addTextResponse('Random game');
-//
-//          incoming.reply(message)
-//      });
-//});
+bot.onStartChattingMessage((message) => {
+    console.log(`${message.from}  - Started chatting: chat ${message.chatId}`);
+    bot.getUserProfile(message.from)
+      .then((user) => {
+          message.reply([
+              addNavigationItems(Bot.Message.text(`Hey ${user.firstName}!`))
+          ])
+      });
+});
 
 // Was a navigation item clicked?
 bot.onTextMessage(navigationMiddleware);

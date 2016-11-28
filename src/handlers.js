@@ -3,14 +3,21 @@
 const Bot  = require('@kikinteractive/kik');
 const {E} = require('./utils');
 const {getGif} = require('./gifs');
-const quotes = require('./quotes');
+
 
 // Handlers
 const handlers = {
   'quote_search' : (message, aiResult) => {
-	let name = nameFromParams(aiResult.parameters);
-	//message.reply(`Searching for quotes by ${name}`);
-	let quote = name.length > 0 ? quotes.getByAuthor(name) : quotes.getRandom();
+	const quotes = require('./quotes');
+	let query = paramsToQuery(aiResult.parameters);
+	let quote;
+	if(query.author || query.search){
+	  quote = quotes.getByQuery(query)
+	}
+	else {
+	  quote = quotes.getRandom();
+	}
+
 	if(quote){
 	  // Quote found!
 	  message.reply([
@@ -20,16 +27,11 @@ const handlers = {
 	}
 	else {
 	  // Quote not found!
-	  message.startTyping();
-	  bot.getUserProfile(message.from)
-		.then((user) => {
-		  message.reply([
-			lastMessage(`I have failed you ${user.firstName}, nothing found! Great, just what I need...\n\nMy mom tells me I should have gone to law school to become of those lawyer bots :robot_face::scroll:`).setTypeTime(1000)
-		  ]);
-		});
+	  message.reply([
+		lastMessage(`I have failed you, nothing found! Great, just what I need...\n\nMy mom tells me I should have gone to law school to become of those lawyer bots :robot_face::scroll:`).setTypeTime(1000)
+	  ]);
 
 	}
-
   },
 
   'input.unknown' :(message, aiResult) => {
@@ -42,6 +44,19 @@ const handlers = {
 };
 
 // Helpers
+function paramsToQuery (params){
+  let query = {};
+  if(!params) {return {};}
+
+  let author = nameFromParams(params);
+  query.author = author.length >0 ? author : null;
+
+  if(params.any){
+	query.search = params.any;
+  }
+  return query;
+}
+
 function nameFromParams (params){
   if(!params) {return '';}
   return `${params['given-name']} ${params['last-name']} ${params['music-artist']}`.replace(/ +(?= )/g,'').trim();

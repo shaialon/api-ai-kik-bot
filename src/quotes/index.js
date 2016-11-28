@@ -6,6 +6,9 @@ const quotesSearchable = quotesArr.map(quote => {
   return Object.assign({},quote,{
 	authorLower: quote.author.toLowerCase(),
 	authorClean: stripStr(quote.author),
+
+	quoteLower: quote.quote.toLowerCase(),
+	quoteClean: stripStr(quote.quote),
   });
 });
 
@@ -14,27 +17,64 @@ const quotesSearchable = quotesArr.map(quote => {
 function getRandom() {
    return sample(quotesSearchable);
 }
-function getByAuthor(authorName) {
-  let exact = [], partial = [];
-  let authorLower = authorName.toLowerCase(), authorClean = stripStr(authorName);
-
+function getByQuery(query) {
+  let exactArr = [], partialArr = [];
+  let filters = createFilters(query);
+  // This is a
   quotesSearchable.forEach(quote => {
-	if(quote.authorLower == authorLower){
-	  exact.push(quote);
+	let exact = true, partial = true;
+	if(filters.author){
+	  if(quote.authorLower != filters.authorLower){
+		exact = false;
+	  }
+
+	  if(quote.authorClean.indexOf(filters.authorClean) <0 ){
+		partial = false;
+	  }
 	}
-	else if(quote.authorClean.indexOf(authorClean) >= 0 ){
-	  partial.push(quote);
+
+	if(filters.search){
+	  if(quote.quoteLower.indexOf(filters.searchLower) <0){
+		exact = false;
+	  }
+
+	  if(quote.quoteClean.indexOf(filters.searchClean) <0 ){
+		partial = false;
+	  }
+	}
+
+	if(exact){
+	  exactArr.push(quote);
+	}
+	if(partial){
+	  partialArr.push(quote);
 	}
   });
-  console.log(`Found ${exact.length} Exact Matches and ${partial.length} for ${authorName}`);
-  if(exact.length > 0){
-	return sample(exact);
+  console.log(`Found ${exactArr.length} Exact Matches and ${partialArr.length} for ${JSON.stringify(query)}`);
+  if(exactArr.length > 0){
+	return sample(exactArr);
   }
-  if(partial.length > 0){
-	return sample(partial);
+  if(partialArr.length > 0){
+	return sample(partialArr);
   }
   return null;
 
+}
+
+function createFilters(query){
+  let filters = {};
+  if(query.author){
+	filters.author = query.author;
+	filters.authorLower = query.author.toLowerCase();
+	filters.authorClean = stripStr(query.author);
+  }
+
+  if(query.search){
+	filters.search = query.search;
+	filters.searchLower = query.search.toLowerCase();
+	filters.searchClean = stripStr(query.search);
+  }
+  return filters;
 }
 
 function getStats() {
@@ -51,5 +91,5 @@ function getStats() {
 module.exports = {
   quotesArr,
   getRandom,
-  getByAuthor
+  getByQuery
 }
