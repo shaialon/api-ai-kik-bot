@@ -30,7 +30,7 @@ bot.onStartChattingMessage((message) => {
     bot.getUserProfile(message.from)
       .then((user) => {
           message.reply([
-              addNavigationItems(Bot.Message.text(`Hey ${user.firstName}!`))
+              addNavigationItems(Bot.Message.text(`Hey ${user.firstName}! Try searching for quotes by your favorite persona:\n"What did Madonna say about Britney?"`))
           ])
       });
 });
