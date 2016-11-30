@@ -22,7 +22,7 @@ const handlers = {
 	  // Quote found!
 	  message.reply([
 		//gifMessage(),
-		lastMessage(`${quote.quote}\n\n~ ${quote.author}`).setTypeTime(1000),
+		lastMessage(`${quote.quote}\n\n~ ${quote.author}`).setTypeTime(200),
 	  ]);
 	}
 	else {

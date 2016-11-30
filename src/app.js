@@ -12,10 +12,10 @@ const REST_PORT = (process.env.PORT || 8083);
 const KIK_API_KEY = process.env.KIK_API_KEY;
 const SERVICE_URL = process.env.APP_NAME ?
     `https://${process.env.APP_NAME}.herokuapp.com` :
-    'https://shaikik.ngrok.io';
+    process.env.TUNNEL_SSL;
 
 let bot = new Bot({
-    username: 'rollagame',
+    username: process.env.KIK_USERNAME,
     apiKey: KIK_API_KEY,
     baseUrl: SERVICE_URL,
     staticKeyboard: new Bot.ResponseKeyboard(navigationItems())
