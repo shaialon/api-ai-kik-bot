@@ -11,7 +11,7 @@ const handlers = {
 	const quotes = require('./quotes');
 	let query = paramsToQuery(aiResult.parameters);
 	let quote;
-	console.log(query);
+	//console.log(query);
 	if(query.author || query.search){
 	  quote = quotes.getByQuery(query)
 	}
