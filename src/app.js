@@ -1,9 +1,9 @@
 'use strict';
 const Bot  = require('@kikinteractive/kik');
 
-const request = require('request');
 const http = require('http');
-
+const express = require('express');
+const app = express();
 
 const {navigationMiddleware, navigationItems, addNavigationItems} = require ('./navigation');
 const {textMiddleware} = require('./text_input');
@@ -18,7 +18,7 @@ let bot = new Bot({
     username: process.env.KIK_USERNAME,
     apiKey: KIK_API_KEY,
     baseUrl: SERVICE_URL,
-    incomingPath: 'webhook_hidden/incoming',
+    incomingPath: '/webhook_hidden/incoming',
     staticKeyboard: new Bot.ResponseKeyboard(navigationItems())
 });
 
@@ -42,7 +42,13 @@ bot.onTextMessage(navigationMiddleware);
 // Resolve text query in api.ai
 bot.onTextMessage(textMiddleware);
 
-console.log('Ready to roll...');
-const server = http
-    .createServer(bot.incoming())
-    .listen(REST_PORT);
+
+app.get('/',(req, res, next) => {
+  res.send('Welcome to Kik bot!')
+});
+
+app.use(bot.incoming());
+
+app.listen(REST_PORT, function () {
+  console.log(`Example app listening on port ${REST_PORT}!`)
+})
