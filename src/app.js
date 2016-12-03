@@ -41,7 +41,7 @@ bot.onTextMessage(navigationMiddleware);
 // Resolve text query in api.ai
 bot.onTextMessage(textMiddleware);
 
-
+console.log('Ready to roll...');
 const server = http
     .createServer(bot.incoming())
     .listen(REST_PORT);

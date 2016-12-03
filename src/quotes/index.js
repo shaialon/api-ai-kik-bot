@@ -1,8 +1,11 @@
 'use strict';
 const {stripStr, sample} = require('../utils');
 const quotesArr = require('./quotes_array');
+const unescape = require('unescape');
+
 // Prepare quotes for Search:
 const quotesSearchable = quotesArr.map(quote => {
+  quote.quote = unescape(quote.quote);
   return Object.assign({},quote,{
 	authorLower: quote.author.toLowerCase(),
 	authorClean: stripStr(quote.author),
