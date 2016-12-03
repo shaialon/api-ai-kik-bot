@@ -18,6 +18,7 @@ let bot = new Bot({
     username: process.env.KIK_USERNAME,
     apiKey: KIK_API_KEY,
     baseUrl: SERVICE_URL,
+    incomingPath: 'webhook_hidden/incoming',
     staticKeyboard: new Bot.ResponseKeyboard(navigationItems())
 });
 

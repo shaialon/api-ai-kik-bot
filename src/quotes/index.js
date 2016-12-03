@@ -37,11 +37,11 @@ function getByQuery(query) {
 	}
 
 	if(filters.search){
-	  if(quote.quoteLower.indexOf(filters.searchLower) <0){
+	  if(quote.quoteLower.indexOf(filters.searchLower) <0 && quote.authorLower.indexOf(filters.searchLower) <0){
 		exact = false;
 	  }
 
-	  if(quote.quoteClean.indexOf(filters.searchClean) <0 ){
+	  if(quote.quoteClean.indexOf(filters.searchClean) <0 && quote.authorClean.indexOf(filters.searchClean) <0){
 		partial = false;
 	  }
 	}
