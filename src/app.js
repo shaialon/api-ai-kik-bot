@@ -42,6 +42,10 @@ bot.onTextMessage(navigationMiddleware);
 // Resolve text query in api.ai
 bot.onTextMessage(textMiddleware);
 
+bot.use(message => {
+  message.reply (`I dont know this format ${message.type}`);
+})
+
 
 app.get('/',(req, res, next) => {
   res.send('Welcome to Kik bot!')
