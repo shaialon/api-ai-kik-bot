@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "tunnel" : "ngrok http -subdomain=yourdomain 8083",
+    "tunnel": "ngrok http -subdomain=yourdomain 8083",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Danil Skachkov <danil.skachkov@speaktoit.com> (https://api.ai)",
@@ -14,10 +14,12 @@
     "@kikinteractive/kik": "^2.0.2",
     "apiai": "^2.0.0",
     "body-parser": "^1.15.0",
+    "express": "^4.14.0",
     "html-entities": "^1.2.0",
     "node-emoji": "^1.4.1",
     "node-uuid": "^1.4.7",
-    "request": "^2.71.0"
+    "request": "^2.71.0",
+    "unescape": "^0.2.0"
   },
   "repository": {
     "type": "git",

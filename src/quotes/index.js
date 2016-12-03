@@ -1,8 +1,11 @@
 'use strict';
 const {stripStr, sample} = require('../utils');
 const quotesArr = require('./quotes_array');
+const unescape = require('unescape');
+
 // Prepare quotes for Search:
 const quotesSearchable = quotesArr.map(quote => {
+  quote.quote = unescape(quote.quote);
   return Object.assign({},quote,{
 	authorLower: quote.author.toLowerCase(),
 	authorClean: stripStr(quote.author),
@@ -34,11 +37,11 @@ function getByQuery(query) {
 	}
 
 	if(filters.search){
-	  if(quote.quoteLower.indexOf(filters.searchLower) <0){
+	  if(quote.quoteLower.indexOf(filters.searchLower) <0 && quote.authorLower.indexOf(filters.searchLower) <0){
 		exact = false;
 	  }
 
-	  if(quote.quoteClean.indexOf(filters.searchClean) <0 ){
+	  if(quote.quoteClean.indexOf(filters.searchClean) <0 && quote.authorClean.indexOf(filters.searchClean) <0){
 		partial = false;
 	  }
 	}

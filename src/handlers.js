@@ -11,6 +11,7 @@ const handlers = {
 	const quotes = require('./quotes');
 	let query = paramsToQuery(aiResult.parameters);
 	let quote;
+	//console.log(query);
 	if(query.author || query.search){
 	  quote = quotes.getByQuery(query)
 	}
@@ -22,7 +23,7 @@ const handlers = {
 	  // Quote found!
 	  message.reply([
 		//gifMessage(),
-		lastMessage(`${quote.quote}\n\n~ ${quote.author}`).setTypeTime(200),
+		lastMessage(`${quote.quote}\n\n~ ${quote.author}`),
 	  ]);
 	}
 	else {
@@ -58,7 +59,7 @@ function paramsToQuery (params){
 }
 
 function nameFromParams (params){
-  if(!params) {return '';}
+  if(!params || !params['given-name']) {return '';}
   return `${params['given-name']} ${params['last-name']} ${params['music-artist']}`.replace(/ +(?= )/g,'').trim();
 }
 
